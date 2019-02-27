@@ -181,8 +181,7 @@ delayMicroseconds(count); // fine tune timing. Count from 7 to 11
 }
 //dataAlign[mData] = meterByte[mData]; //align 11 bit bytes
 if (bitRead(meterByte[mData], 10)==0) dataAlign[mData] = meterByte[mData]; //should be start bit
-if (bitRead(meterByte[mData], 10) >0) dataAlign[mData] = meterByte[mData] >>1; //shift right may
-correct align
+if (bitRead(meterByte[mData], 10) >0) dataAlign[mData] = meterByte[mData] >>1; //shift right may correct align
 if ((bitRead(meterByte[mData], 5) >0) && (bitRead (meterByte[mData], 6) >0)) dataAlign[mData] =
 meterByte[mData] >>1; //bit 5 & 6 should be 1
 if ((bitRead(meterByte[mData], 6) >0) && (bitRead (meterByte[mData], 7) >0)) dataAlign[mData] =
