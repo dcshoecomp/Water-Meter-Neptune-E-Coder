@@ -1,3 +1,9 @@
+My Intention:
+
+Use esp8266 to simply poll data from the e-coder water meter and dump it via post request.
+
+Original BobPrust Intention:
+
 # Neptune-E-Coder or Pro Read Water meter reader
 Separate programs (1. e-coder 2. ProRead)
  Arduino Water Meter Reader and Ethernet Server.
