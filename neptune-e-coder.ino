@@ -8,7 +8,7 @@ RxData pin 6
 led pin 9
 Relay pin 8
 */
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)#include <SPI.h>
+#include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 #include <Dns.h>
@@ -29,7 +29,7 @@ byte packetBuffer[ NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing pack
 EthernetServer server(80);
 EthernetClient client;
 EthernetUDP Udp; // A UDP instance to let us send and receive packets over UDP
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)/////////////////////////////Read Meter declarations
+/////////////////////////////Read Meter declarations
 unsigned int dataAlign[35]; // 35 is ok Buffer for bit read data
 unsigned int meterByte[35]; // 35 is ok
 int count = 9;
@@ -55,7 +55,7 @@ unsigned int Current_Minute = 0;
 int bitRate=415;
 // 1187hz. Seems more stable than 1200
 boolean state=false;
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)boolean laststate = false;
+boolean laststate = false;
 void setup() {
 Serial.begin(9600);
 pinMode (RxData,INPUT_PULLUP);// Read
@@ -68,7 +68,7 @@ Ethernet.begin(mac, ip);
 digitalWrite(10,HIGH);
 server.begin();
 }
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)void loop() {
+void loop() {
 unsigned long currentMillis = millis();
 if (currentMillis - previousMillis > interval) {
 previousMillis = currentMillis;
@@ -92,7 +92,7 @@ command = c;
 // char following the $ char defines what to send
 set=0;
 }
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)if(c==36) set=1;
+if(c==36) set=1;
 // char $ recieved
 if (c == '\n') {
 // Null = HTTP request has ended
@@ -112,7 +112,7 @@ if(command==49) client.write(c); // command =1
 if((command==50)&&(c == 'h')) set_P=0;
 if((command==50)&&(set_P == 1)) client.write(c);
 if((command==50)&&(c == 'H')) set_P=1; // 1 per day all days ( Written in SD string)
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)// All data last 32 hours client print command
+// All data last 32 hours client print command
 if((command==51) && (last > (last_A - 33))) client.write(c); //send last 32
 // All data last 7 days client print command
 if((command==52) && (last > (last_A - 169))) client.write(c); //send last 7 days
@@ -132,7 +132,7 @@ delay(1);
 last_A=last; // cumulative SD record count (Also incremented in SD Write)
 last=0;
 // clear 'last' record count register
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)command=0; // clear 'command' register
+command=0; // clear 'command' register
 }
 }
 }
@@ -153,7 +153,7 @@ if(state !=digitalRead(RxData)) break;
 digitalWrite(TxClock,LOW);
 delayMicroseconds(bitRate);
 }
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)// Look for Rx line to go Low (62 - 95mS)
+// Look for Rx line to go Low (62 - 95mS)
 //Quickly align transistion of state change
 state = digitalRead(RxData);
 while (state == digitalRead(RxData)) {
@@ -176,7 +176,7 @@ delayMicroseconds(96);
 laststate =! digitalRead(RxData);
 if (bitcount==5)
 bitWrite(meterByte[mData], bytecount, laststate);// write bit state
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)}
+}
 delayMicroseconds(count); // fine tune timing. Count from 7 to 11
 }
 //dataAlign[mData] = meterByte[mData]; //align 11 bit bytes
@@ -195,7 +195,7 @@ digitalWrite(TxClock,HIGH); // put low on meter
 digitalWrite(Relay,LOW); //Turn off relay before writing to SD card
 }
 //end data capture
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)//Write data to SDCardFile
+//Write data to SDCardFile
 void SDcardWrite() {
 pinMode(10,OUTPUT);
 // disable w5100 SPI while starting SD
@@ -220,7 +220,7 @@ dataString += meterByte[7];
 dataString += meterByte[8];
 dataString += meterByte[9];
 dataString += meterByte[10];
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)dataString += meterByte[11];
+dataString += meterByte[11];
 dataString += (".");
 dataString += meterByte[12];
 if (Current_Hour==23){
@@ -243,7 +243,7 @@ dataString = ""; //delete string
 digitalWrite(4,HIGH);
 // disable SD SPI
 last_A++; // increment record count
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)}
+}
 void GetTime(){
 pinMode(4,OUTPUT); // disable SD SPI while starting w5100
 digitalWrite(4,HIGH);
@@ -262,7 +262,7 @@ if ( Udp.parsePacket() ) {
 Udp.read(packetBuffer,NTP_PACKET_SIZE); // read the packet into the buffer
 unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
 unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)unsigned long secsSince1900 = highWord << 16 | lowWord;
+unsigned long secsSince1900 = highWord << 16 | lowWord;
 const unsigned long seventyYears = 2208988800UL;
 unsigned long epoch = secsSince1900 - seventyYears;
 //Current_Date = (41244 +((epoch - 1354341600) / 86400));// DST
@@ -281,7 +281,7 @@ packetBuffer[1] = 0; // Stratum, or type of clock
 packetBuffer[2] = 6; // Polling Interval
 packetBuffer[3] = 0xEC; // Peer Clock Precision
 // 8 bytes of zero for Root Delay & Root Dispersion
-Print to PDF without this message by purchasing novaPDF (http://www.novapdf.com/)packetBuffer[12] = 49;
+packetBuffer[12] = 49;
 packetBuffer[13] = 0x4E;
 packetBuffer[14] = 49;
 packetBuffer[15] = 52;
